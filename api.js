@@ -57,5 +57,40 @@ mongoose.Promise = global.Promise;
         res.status(500).send("Internal error\n");
     }
 }); 
+
+//Consultar Tarea
+router.get('/all-tasks', async (req, res) => {
+    try {
+        const data = await TaskModel.find();
+        res.status(200).send(data);
+    } catch (err) {
+        res.status(500).send("Internal error\n");
+    }
+});
+
+
+//Actualizar Tarea
+router.post('/update-task', async function (req, res) {
+    try {
+        await TaskModel.updateOne(
+            { TaskId: req.body.TaskId },
+            { Name: req.body.Name, Deadline: req.body.Deadline }
+        );
+        res.status(200).send("OK\n");
+    } catch (err) {
+        res.status(500).send("Internal error\n");
+    }
+});
+
+//Eliminar Tarea
+router.delete('/delete-task', async function (req, res) {
+    try {
+        await TaskModel.deleteOne({ TaskId: req.body.TaskId });
+        res.status(200).send("OK\n");
+    } catch (err) {
+        res.status(500).send("Internal error\n");
+    }
+});
+
 module.exports = router;
 
